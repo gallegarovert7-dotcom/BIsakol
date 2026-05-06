@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bisaya Tongue Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* SPLASH SCREEN STYLES */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        #splash-screen.fade-out {
+            animation: fadeOut 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .splash-content {
+            text-align: center;
+            color: white;
+            animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .splash-logo {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .splash-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .splash-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        .splash-start-btn {
+            background: linear-gradient(135deg, #5fae46, #4a9a3a);
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(95, 174, 70, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .splash-start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(95, 174, 70, 0.6);
+        }
+
+        .splash-start-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(95, 174, 70, 0.3);
+        }
+
+        #main-app {
+            display: none;
+            width: 100%;
+        }
+
+        #main-app.show {
+            display: flex;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* TRANSLATOR CONTAINER */
+        .container {
+            background: white;
+            width: 60%;
+            max-width: 750px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            border: 1px solid #e8e8e8;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            border-bottom: 2px solid #f1f3f4;
+            gap: 30px;
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+        }
+
+        .pill {
+            color: #1a73e8;
+            font-weight: 700;
+            padding: 10px 28px;
+            border-radius: 25px;
+            background: #e8f0fe;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .arrow-icon {
+            color: #ccc;
+            font-size: 20px;
+        }
+
+        .main-box {
+            display: flex;
+            flex-direction: column;
+            min-height: 450px;
+        }
+
+        @media (min-width: 768px) {
+            .main-box {
+                flex-direction: row;
+            }
+        }
+
+        .card {
+            flex: 1;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card-input {
+            border-right: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        @media (min-width: 768px) {
+            .card-input {
+                border-right: 1px solid #eee;
+                border-bottom: none;
+            }
+        }
+
+        .card-output {
+            background-color: #fafafa;
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 32px;
+            resize: none;
+            background: transparent;
+            height: 120px;
+            color: #202124;
+            font-weight: 500;
+        }
+
+        textarea::placeholder {
+            color: #d3d3d3;
+        }
+
+        textarea:focus {
+            background: rgba(26, 115, 232, 0.02);
+        }
+
+        .out-text {
+            font-size: 38px;
+            color: #1a73e8;
+            font-weight: 600;
+            margin-bottom: 10px;
+            min-height: 50px;
+            line-height: 1.2;
+        }
+
+        .details-box {
+            display: none;
+            margin-top: 20px;
+            border-top: 2px solid #f1f3f4;
+            padding-top: 20px;
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .details-box.active {
+            display: block;
+        }
+
+        .tag {
+            background: #1a73e8;
+            color: white;
+            font-size: 11px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .syns-text {
+            font-size: 13px;
+            color: #70757a;
+            flex-wrap: wrap;
+        }
+
+        .syns-text b {
+            color: #1a73e8;
+            font-weight: 600;
+        }
+
+        .meaning-box {
+            margin: 18px 0;
+            padding: 16px;
+            background: linear-gradient(135deg, #f0f7ff, #f9fafb);
+            border-radius: 10px;
+            border-left: 5px solid #34a853;
+        }
+
+        .meaning-label {
+            font-size: 11px;
+            color: #5f6368;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .meaning-text {
+            font-size: 15px;
+            color: #3c4043;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .ex-sentence {
+            font-size: 14px;
+            color: #3c4043;
+            padding: 16px;
+            background: linear-gradient(135deg, #fff8e1, #fafafa);
+            border-radius: 10px;
+            border-left: 5px solid #ea8600;
+            margin-top: 14px;
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        .ex-label {
+            font-size: 11px;
+            color: #5f6368;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #f1f3f4;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 22px;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            background: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+        }
+
+        .icon-btn:hover {
+            background: #eee;
+            color: #1a73e8;
+            transform: scale(1.15);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.92);
+        }
+
+        .icon-btn.listening {
+            background: #ea4335;
+            color: white;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.4);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 0 10px rgba(234, 67, 53, 0);
+            }
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0.6; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.6; }
+        }
+
+        .source-badge {
+            font-size: 11px;
+            color: #fff;
+            background: linear-gradient(135deg, #34a853, #2d8659);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .voice-status {
+            font-size: 12px;
+            color: #ea4335;
+            margin-top: 10px;
+            display: none;
+            animation: slideDown 0.3s ease;
+            font-weight: 500;
+        }
+
+        .voice-status.show {
+            display: block;
+        }
+
+        .voice-status.listening {
+            color: #1a73e8;
+        }
+
+        .voice-status.processing {
+            color: #ea8600;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .copy-feedback, .error-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #34a853;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .error-message {
+            background: #ea4335;
+        }
+
+        /* PRETEST CONTAINER */
+        :root {
+            --bg-blue: #2e6ea4;
+            --card-blue: #215e8c;
+            --border-green: #5fae46;
+            --fail-red: #e74c3c;
+            --skip-orange: #ea8600;
+        }
+
+        .app-container {
+            background-color: var(--bg-blue);
+            width: 100%;
+            max-width: 375px;
+            min-height: 550px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .header-box {
+            background-color: white;
+            border: 3px solid var(--border-green);
+            border-radius: 10px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 15px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .header-box span { font-weight: bold; font-size: 1.1rem; letter-spacing: 1px; color: black; }
+
+        .arrow-icon {
+            position: absolute;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            border-right: 3px solid black;
+            border-bottom: 3px solid black;
+            transform: rotate(45deg);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .arrow-icon.active { transform: rotate(-135deg); }
+
+        #landing-screen {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        #pretest-execution {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: popOut 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popOut {
+            from { opacity: 0; transform: scale(0.8) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .activity-card {
+            background-color: var(--card-blue);
+            border: 2px solid #1a4a6e;
+            border-radius: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            color: white;
+            overflow-y: auto;
+            max-height: 450px;
+        }
+
+        #level-indicator {
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .word-display {
+            border: 1px solid black;
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            margin-bottom: 25px;
+            box-sizing: border-box;
+        }
+
+        .word-row { font-size: 1.1rem; margin: 5px 0; }
+        .word-row b { color: #fff; font-size: 1.4rem; }
+
+        .accuracy-container { width: 100%; margin-bottom: 30px; }
+        .accuracy-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
+        .bar-outline { height: 24px; border: 2px solid #1a4a6e; border-radius: 12px; width: 100%; overflow: hidden; background: #0e314d; }
+        .bar-fill { height: 100%; width: 0%; background-color: var(--border-green); transition: width 0.6s ease; }
+
+        .mic-container { position: relative; width: 90px; height: 90px; margin-top: 10px; }
+        .mic-btn {
+            width: 90px; height: 90px; border: none; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s;
+            position: relative; z-index: 2;
+        }
+        .mic-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .mic-btn.active { transform: scale(1.1); background: rgba(95, 174, 70, 0.4); box-shadow: 0 0 20px var(--border-green); }
+
+        .ripple { position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 50%; border: 2px solid var(--border-green); opacity: 0; z-index: 1; pointer-events: none; }
+        .mic-btn.active ~ .ripple { animation: pulse-ripple 1.2s infinite; }
+
+        @keyframes pulse-ripple { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.7); opacity: 0; } }
+
+        .mic-icon { width: 35px; height: 50px; background: #000; border-radius: 18px; position: relative; }
+        .mic-icon::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); width: 5px; height: 12px; background: #000; }
+        .mic-icon::before { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); width: 22px; height: 8px; background: #000; border-radius: 4px; }
+
+        .button-group { display: flex; gap: 10px; width: 100%; margin-top: 15px; }
+        .btn { flex: 1; padding: 12px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; border: 2px solid; }
+        .skip-btn { border-color: var(--skip-orange); background: rgba(234, 134, 0, 0.1); color: var(--skip-orange); }
+        .retry-btn { border-color: var(--border-green); background: rgba(95, 174, 70, 0.1); color: var(--border-green); }
+
+        #result-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            z-index: 100; border-radius: 15px; padding: 20px; box-sizing: border-box;
+        }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; width: 100%; color: black; text-align: center; max-height: 80%; overflow-y: auto; }
+        .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+            .container, .app-container {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1a73e8;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1557b0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash-screen">
+    <div class="splash-content">
+        <div class="splash-logo">🗣️</div>
+        <h1 class="splash-title">BISAYA TONGUE PRO</h1>
+        <p class="splash-subtitle">Master Cebuano Language</p>
+        <button class="splash-start-btn" onclick="startApp()">START</button>
+    </div>
+</div>
+
+<!-- MAIN APPLICATION -->
+<div id="main-app">
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="pill">🇬🇧 English</div>
+                <i class="fas fa-arrow-right arrow-icon"></i>
+                <div class="pill" style="background: #f1f3f4; color: #5f6368;">🇵🇭 Cebuano</div>
+            </div>
+
+            <div class="main-box">
+                <div class="card card-input">
+                    <textarea id="in" placeholder="Type or speak here...">eyes</textarea>
+                    <div id="voiceStatus" class="voice-status"></div>
+                    <div class="footer">
+                        <button id="micBtn" class="icon-btn" title="Start Voice Input" onclick="toggleVoiceInput()">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="icon-btn" onclick="clearIn()" title="Clear Input">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card card-output">
+                    <div id="out" class="out-text">Mata</div>
+
+                    <div id="details" class="details-box">
+                        <div class="tag-row">
+                            <span id="type" class="tag">Noun</span>
+                            <span class="syns-text">Synonyms: <b id="syns">panan-aw</b></span>
+                        </div>
+
+                        <div class="meaning-box">
+                            <span class="meaning-label">📚 Meaning</span>
+                            <p class="meaning-text" id="meaning">The organ of sight; used to see</p>
+                        </div>
+
+                        <div>
+                            <span class="ex-label">💬 Example Sentence</span>
+                            <div class="ex-sentence">
+                                "<span id="ex">The word 'Mata' is the equivalent of eyes in the Cebuano language.</span>"
+                            </div>
+                        </div>
+
+                        <span id="source" class="source-badge">Verified Dictionary</span>
+                    </div>
+
+                    <div class="footer">
+                        <button onclick="speakOut()" class="icon-btn" title="Speak in Cebuano Accent">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <button onclick="copyOut()" class="icon-btn" title="Copy Translation">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-container">
+            <div class="header-box" onclick="togglePretest()">
+                <span id="main-title">BISAYA TONGUE PRO</span>
+                <div class="arrow-icon" id="header-arrow"></div>
+            </div>
+
+            <div id="landing-screen">
+                <h2>Ready for Level 1?</h2>
+                <p style="opacity: 0.7; margin-bottom: 20px;">Test your Cebuano pronunciation skills!</p>
+                <div style="font-size: 3rem; margin-top: 20px; opacity: 0.3;">🗣️</div>
+            </div>
+
+            <div id="pretest-execution">
+                <div class="activity-card">
+                    <div id="level-indicator">LEVEL 1</div>
+                    <div class="word-display">
+                        <div class="word-row">Cebuano: <b id="ceb-word">...</b></div>
+                        <div class="word-row">English: <span id="eng-word">...</span></div>
+                        <div class="word-row" style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Meaning: <span id="meaning-text">...</span></div>
+                    </div>
+
+                    <div class="accuracy-container">
+                        <div class="accuracy-info"><span>Accuracy</span><span id="acc-percent">0%</span></div>
+                        <div class="bar-outline"><div class="bar-fill" id="acc-fill"></div></div>
+                    </div>
+
+                    <div class="mic-container">
+                        <button class="mic-btn" id="mic-btn" onclick="handleMicToggle()">
+                            <div class="mic-icon"></div>
+                        </button>
+                        <div class="ripple"></div>
+                    </div>
+
+                    <p id="hint" style="margin-top: 15px; font-weight: bold; text-align: center;">Tap to record</p>
+
+                    <div class="button-group" id="button-group" style="display: none;">
+                        <button class="btn skip-btn" onclick="skipWord()">Skip</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result-modal">
+                <div class="modal-content">
+                    <h2 style="margin-top: 0;">Pre-Test Results</h2>
+                    <div id="word-stats"></div>
+                    <div style="display:flex; gap:10px; margin-top:20px;">
+                        <button id="next-set-btn" class="btn" style="background: var(--bg-blue); color: white; border:none;" onclick="proceedToNextSetOrExit()">NEXT SET</button>
+                        <button class="btn retry-btn" onclick="restartSet()">RESTART</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // SPLASH SCREEN FUNCTIONALITY
+    function startApp() {
+        const splashScreen = document.getElementById('splash-screen');
+        const mainApp = document.getElementById('main-app');
+
+        splashScreen.classList.add('fade-out');
+
+        setTimeout(() => {
+            mainApp.classList.add('show');
+            runAI();
+        }, 800);
+    }
+
+    /* TRANSLATOR SCRIPTS */
+    const inEl = document.getElementById('in');
+    const outEl = document.getElementById('out');
+    const detailsBox = document.getElementById('details');
+    const micBtn = document.getElementById('micBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    let timer;
+    let isListening = false;
+    let recognition;
+
+    const baseURL = window.location.origin;
+    console.log('Base URL:', baseURL);
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onstart = () => {
+            console.log('Speech recognition started');
+            isListening = true;
+            micBtn.classList.add('listening');
+            micBtn.title = 'Stop listening';
+            voiceStatus.textContent = '🎤 Listening... Speak now!';
+            voiceStatus.classList.add('show', 'listening');
+            voiceStatus.classList.remove('processing');
+        };
+
+        recognition.onend = () => {
+            console.log('Speech recognition ended');
+            isListening = false;
+            micBtn.classList.remove('listening');
+            micBtn.title = 'Start Voice Input';
+            setTimeout(() => {
+                voiceStatus.classList.remove('show');
+            }, 1500);
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            let errorMsg = event.error;
+            if (event.error === 'no-speech') {
+                errorMsg = 'No speech detected. Please try again.';
+            } else if (event.error === 'network') {
+                errorMsg = 'Network error. Check your connection.';
+            } else if (event.error === 'not-allowed') {
+                errorMsg = 'Microphone permission denied.';
+            } else if (event.error === 'audio-capture') {
+                errorMsg = 'No microphone found.';
+            } else if (event.error === 'service-not-allowed') {
+                errorMsg = 'Speech recognition service not allowed.';
+            }
+
+            voiceStatus.textContent = `❌ Error: ${errorMsg}`;
+            voiceStatus.classList.add('show');
+            voiceStatus.classList.remove('listening');
+            showErrorNotification(errorMsg);
+
+            isListening = false;
+            micBtn.classList.remove('listening');
+            micBtn.title = 'Start Voice Input';
+        };
+
+        recognition.onresult = (event) => {
+            console.log('Speech recognition result');
+            let interimTranscript = '';
+            let finalTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+
+            if (interimTranscript || finalTranscript) {
+                inEl.value = finalTranscript + interimTranscript;
+            }
+
+            if (finalTranscript) {
+                console.log('Final transcript:', finalTranscript);
+                voiceStatus.textContent = '⏳ Processing...';
+                voiceStatus.classList.add('processing');
+                voiceStatus.classList.remove('listening');
+                clearTimeout(timer);
+                runAI();
+            }
+        };
+    } else {
+        console.warn('Speech Recognition API not supported');
+        micBtn.disabled = true;
+        micBtn.title = 'Speech Recognition not supported in your browser';
+        micBtn.style.opacity = '0.5';
+        micBtn.style.cursor = 'not-allowed';
+    }
+
+    function toggleVoiceInput() {
+        if (!recognition) {
+            showErrorNotification('Speech Recognition not supported in your browser');
+            return;
+        }
+
+        if (isListening) {
+            recognition.stop();
+            isListening = false;
+            micBtn.classList.remove('listening');
+            voiceStatus.textContent = '⏹️ Stopped listening';
+            voiceStatus.classList.add('show');
+            setTimeout(() => {
+                voiceStatus.classList.remove('show');
+            }, 1500);
+        } else {
+            inEl.value = '';
+            outEl.innerText = '';
+            detailsBox.classList.remove('active');
+            voiceStatus.textContent = '🎤 Listening... Speak now!';
+            voiceStatus.classList.add('show', 'listening');
+            recognition.start();
+        }
+    }
+
+    async function runAI() {
+        const text = inEl.value.trim();
+        console.log('Running AI with text:', text);
+
+        if (!text) {
+            outEl.innerText = "";
+            detailsBox.classList.remove('active');
+            return;
+        }
+
+        outEl.classList.add('loading');
+
+        try {
+            const requestURL = `${baseURL}/translate`;
+            console.log('Sending request to:', requestURL);
+
+            const response = await fetch(requestURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.text();
+                console.error('Response error:', errorData);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            outEl.innerText = data.translated || "";
+
+            if (data.details) {
+                detailsBox.classList.add('active');
+                document.getElementById('type').innerText = data.details.type || "Unknown";
+                document.getElementById('syns').innerText = data.details.synonyms || "N/A";
+                document.getElementById('meaning').innerText = data.details.meaning || "N/A";
+                document.getElementById('ex').innerText = data.details.example || "N/A";
+                document.getElementById('source').innerText = data.details.source || "AI Engine";
+
+                voiceStatus.textContent = '✅ Translation complete!';
+                voiceStatus.classList.add('show');
+                voiceStatus.classList.remove('processing');
+            } else {
+                detailsBox.classList.remove('active');
+            }
+        } catch (e) {
+            console.error('Translation error:', e);
+            outEl.innerText = "Error...";
+            detailsBox.classList.remove('active');
+            showErrorNotification('Translation error: ' + e.message);
+            voiceStatus.textContent = '❌ Error occurred';
+            voiceStatus.classList.add('show');
+        } finally {
+            outEl.classList.remove('loading');
+        }
+    }
+
+    function speakOut() {
+        const textToSpeak = outEl.innerText;
+        if (!textToSpeak || textToSpeak === "Error..." || textToSpeak === "") return;
+
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'fil-PH';
+        utterance.rate = 0.95;
+        utterance.pitch = 1.0;
+        utterance.volume = 1;
+
+        if (isListening) {
+            recognition.stop();
+        }
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function clearIn() {
+        inEl.value = "";
+        outEl.innerText = "";
+        detailsBox.classList.remove('active');
+        voiceStatus.classList.remove('show');
+
+        if (isListening) {
+            recognition.stop();
+            isListening = false;
+            micBtn.classList.remove('listening');
+        }
+        inEl.focus();
+    }
+
+    function copyOut() {
+        const text = outEl.innerText;
+        if (text && text !== "Error...") {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccessNotification('Copied to clipboard!');
+            }).catch(() => {
+                showErrorNotification('Failed to copy');
+            });
+        }
+    }
+
+    function showSuccessNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'copy-feedback';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideUp 0.3s ease forwards';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 2000);
+    }
+
+    function showErrorNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'error-message';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideUp 0.3s ease forwards';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3500);
+    }
+
+    inEl.addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(runAI, 600);
+    });
+
+    inEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            runAI();
+        }
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (isListening) {
+            recognition.stop();
+        }
+    });
+
+    /* PRETEST SCRIPTS */
+    const allSets = [
+        {
+            name: "Mga Kolor (Colors)",
+            words: [
+                { ceb: "Pula", eng: "Red", mean: "Color of blood" },
+                { ceb: "Asul", eng: "Blue", mean: "Color of the sky" },
+                { ceb: "Dalag", eng: "Yellow", mean: "Color of the sun" },
+                { ceb: "Gidlay", eng: "Green", mean: "Color of leaves" },
+                { ceb: "Itom", eng: "Black", mean: "Color of charcoal" }
+            ]
+        },
+        {
+            name: "Mga Hayop (Animals)",
+            words: [
+                { ceb: "Iro", eng: "Dog", mean: "Domesticated canine" },
+                { ceb: "Iring", eng: "Cat", mean: "Small feline pet" },
+                { ceb: "Baboy", eng: "Pig", mean: "Pink farm animal" },
+                { ceb: "Baka", eng: "Cow", mean: "Produces milk" },
+                { ceb: "Kanding", eng: "Goat", mean: "Farm animal with horns" }
+            ]
+        },
+        {
+            name: "Bahin sa Lawas (Body Parts)",
+            words: [
+                { ceb: "Mata", eng: "Eyes", mean: "Used for seeing" },
+                { ceb: "Dunggan", eng: "Ear", mean: "Used for hearing" },
+                { ceb: "Ilong", eng: "Nose", mean: "Used for smelling" },
+                { ceb: "Baba", eng: "Mouth", mean: "Used for eating" },
+                { ceb: "Kamot", eng: "Hand", mean: "Used for grasping" }
+            ]
+        }
+    ];
+
+    let currentSetIndex = 0;
+    let currentIndex = 0;
+    let results = [];
+    let isRecording = false;
+    let ptRecognition;
+    let failedWordsCount = 0;
+    let isExecutionVisible = false;
+
+    if ('webkitSpeechRecognition' in window) {
+        ptRecognition = new webkitSpeechRecognition();
+        ptRecognition.continuous = false;
+        ptRecognition.interimResults = false;
+        ptRecognition.lang = 'en-PH';
+
+        ptRecognition.onstart = () => {
+            isRecording = true;
+            document.getElementById('mic-btn').classList.add('active');
+            document.getElementById('hint').innerText = "🔴 Listening...";
+        };
+
+        ptRecognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.toLowerCase();
+            processSpeech(transcript);
+        };
+
+        ptRecognition.onerror = (event) => {
+            console.error(event.error);
+            stopRecordingUI();
+            document.getElementById('hint').innerText = "Error: " + event.error;
+        };
+
+        ptRecognition.onend = () => {
+            stopRecordingUI();
+        };
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function togglePretest() {
+        const landingScreen = document.getElementById('landing-screen');
+        const executionScreen = document.getElementById('pretest-execution');
+        const arrowIcon = document.getElementById('header-arrow');
+        const title = document.getElementById('main-title');
+
+        isExecutionVisible = !isExecutionVisible;
+
+        if (isExecutionVisible) {
+            landingScreen.style.display = 'none';
+            executionScreen.style.display = 'flex';
+            arrowIcon.classList.add('active');
+            title.innerText = "PRE TEST";
+            startNewSet();
+        } else {
+            landingScreen.style.display = 'flex';
+            executionScreen.style.display = 'none';
+            arrowIcon.classList.remove('active');
+            title.innerText = "BISAYA TONGUE PRO";
+        }
+    }
+
+    function startNewSet() {
+        currentIndex = 0;
+        failedWordsCount = 0;
+        results = [];
+        shuffleArray(allSets[currentSetIndex].words);
+        document.getElementById('level-indicator').innerText = allSets[currentSetIndex].name;
+        loadWord();
+    }
+
+    function loadWord() {
+        const word = allSets[currentSetIndex].words[currentIndex];
+        document.getElementById('ceb-word').innerText = word.ceb;
+        document.getElementById('eng-word').innerText = word.eng;
+        document.getElementById('meaning-text').innerText = word.mean;
+        resetWordUI();
+    }
+
+    function resetWordUI() {
+        document.getElementById('acc-percent').innerText = "0%";
+        document.getElementById('acc-fill').style.width = "0%";
+        document.getElementById('acc-fill').style.backgroundColor = "var(--border-green)";
+        document.getElementById('hint').innerText = "Tap to record";
+        document.getElementById('hint').style.color = "white";
+        document.getElementById('button-group').style.display = 'none';
+        document.getElementById('mic-btn').disabled = false;
+    }
+
+    function restartSet() {
+        document.getElementById('result-modal').style.display = 'none';
+        startNewSet();
+    }
+
+    function handleMicToggle() {
+        if (!ptRecognition) {
+            alert("Speech recognition not supported in this browser.");
+            return;
+        }
+        if (isRecording) {
+            ptRecognition.stop();
+        } else {
+            ptRecognition.start();
+        }
+    }
+
+    function stopRecordingUI() {
+        isRecording = false;
+        document.getElementById('mic-btn').classList.remove('active');
+    }
+
+    function processSpeech(spoken) {
+        const target = document.getElementById('ceb-word').innerText.toLowerCase();
+        let score = 0;
+
+        if (spoken.includes(target)) {
+            score = Math.floor(Math.random() * 11) + 90;
+        } else {
+            score = Math.floor(Math.random() * 40) + 10;
+        }
+
+        displayResult(score, spoken);
+    }
+
+    function displayResult(score, spoken) {
+        const passed = score >= 75;
+        if (!passed) {
+            failedWordsCount++;
+        }
+
+        document.getElementById('acc-percent').innerText = score + "%";
+        document.getElementById('acc-fill').style.width = score + "%";
+        document.getElementById('acc-fill').style.backgroundColor = passed ? "var(--border-green)" : "var(--fail-red)";
+
+        document.getElementById('hint').innerHTML = `${passed ? '✅ Correct!' : '❌ Incorrect'}<br><small>Heard: "${spoken}"</small>`;
+        document.getElementById('hint').style.color = passed ? "var(--border-green)" : "#ffb3b3";
+
+        results.push({ word: allSets[currentSetIndex].words[currentIndex].ceb, score: score });
+
+        document.getElementById('mic-btn').disabled = true;
+
+        if (passed) {
+            setTimeout(nextWord, 1500);
+        } else {
+            document.getElementById('button-group').style.display = 'flex';
+        }
+    }
+
+    function skipWord() {
+        nextWord();
+    }
+
+    function nextWord() {
+        currentIndex++;
+        if (currentIndex < 5) {
+            loadWord();
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function showFinalResults() {
+        document.getElementById('result-modal').style.display = 'flex';
+        const stats = document.getElementById('word-stats');
+
+        let totalScore = results.reduce((acc, curr) => acc + curr.score, 0);
+        let avgPercentage = Math.round(totalScore / 5);
+
+        let msg = "";
+
+        if (avgPercentage < 75 || failedWordsCount > 0) {
+            if (failedWordsCount === 1) msg = "You have 2 days to improve this set";
+            else if (failedWordsCount === 2) msg = "You have 4 days to improve this set";
+            else if (failedWordsCount === 3) msg = "You have 6 days to improve this set";
+            else if (failedWordsCount === 4) msg = "You have 7 days to improve this set";
+            else if (failedWordsCount === 5) msg = "You have 8 days to improve this set";
+            else msg = "You have 2 days to improve this set";
+        } else {
+            msg = "🌟 Perfect Score! Excellent job!";
+        }
+
+        stats.innerHTML = `
+            <h3 style="color:var(--bg-blue)">Score: ${avgPercentage}%</h3>
+            <p style="font-weight:bold; margin: 15px 0;">${msg}</p>
+            <hr>
+            ${results.map(r => `
+                <div class="stat-row">
+                    <span>${r.word}</span>
+                    <b style="color: ${r.score >= 75 ? 'green' : 'red'}">${r.score}%</b>
+                </div>
+            `).join('')}
+        `;
+
+        const nextBtn = document.getElementById('next-set-btn');
+        if (avgPercentage >= 75) {
+            nextBtn.disabled = false;
+            nextBtn.style.backgroundColor = "var(--bg-blue)";
+            nextBtn.innerText = (currentSetIndex >= allSets.length - 1) ? "EXIT" : "NEXT SET";
+        } else {
+            nextBtn.disabled = true;
+            nextBtn.style.backgroundColor = "#555";
+            nextBtn.innerText = "Locked (< 75%)";
+        }
+    }
+
+    function proceedToNextSetOrExit() {
+        let totalScore = results.reduce((acc, curr) => acc + curr.score, 0);
+        let avgPercentage = Math.round(totalScore / 5);
+
+        if (avgPercentage < 75) {
+            alert("You cannot proceed to the next set as you did not achieve 75% or above on the total score.");
+            return;
+        }
+
+        document.getElementById('result-modal').style.display = 'none';
+
+        if (currentSetIndex < allSets.length - 1) {
+            currentSetIndex++;
+            startNewSet();
+        } else {
+            alert("Pre-tests completed! Exiting.");
+            location.reload();
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Game</title>
+    <style>
+        /* Centers everything on the screen */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #2D0B5A; /* Dark Purple */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        /* The Circular Button */
+        .start-btn {
+            /* Width and Height must be identical for a circle */
+            width: 150px;
+            height: 150px;
+
+            /* 50% border-radius creates the circle */
+            border-radius: 50%;
+
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            background-color: #a349eb;
+            border: 4px solid #ffffff;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+            /* Ensures text is centered inside the circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Animation when you hover over the circle */
+        .start-btn:hover {
+            transform: scale(1.1);
+            background-color: #ffffff;
+            color: #2D0B5A;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .start-btn:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+
+    <button class="start-btn" onclick="startGame()">Start</button>
+
+    <script>
+        function startGame() {
+            alert("Game Starting!");
+            // window.location.href = "game.html";
+        }
+    </script>
+
+</body>
+</html>
